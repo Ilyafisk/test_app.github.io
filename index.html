@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бронирование</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Бронирование</h1>
+    <form id="bookingForm">
+        <label for="name">Ваше имя:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="date">Дата бронирования:</label>
+        <input type="date" id="date" name="date" required>
+        
+        <button type="submit">Забронировать</button>
+    </form>
+
+    <script>
+        // Обработка отправки формы
+        document.getElementById('bookingForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const date = document.getElementById('date').value;
+
+            // Отправка данных в Telegram
+            if (window.Telegram && Telegram.WebApp) {
+                Telegram.WebApp.sendData(JSON.stringify({ name, date }));
+                Telegram.WebApp.close();
+            } else {
+                alert('Данные отправлены: ' + JSON.stringify({ name, date }));
+            }
+        });
+
+        // Инициализация WebApp
+        if (window.Telegram && Telegram.WebApp) {
+            Telegram.WebApp.ready();
+        }
+    </script>
+</body>
+</html>
